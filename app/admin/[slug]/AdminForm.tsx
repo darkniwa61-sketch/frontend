@@ -5,7 +5,19 @@ import { Save, Loader2, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
-export default function AdminForm({ initialTenant }: { initialTenant: any }) {
+interface Tenant {
+  slug: string;
+  name: string;
+  primaryColor: string;
+  secondaryColor: string;
+  pages: {
+    content: {
+      sections: Record<string, unknown>[];
+    };
+  }[];
+}
+
+export default function AdminForm({ initialTenant }: { initialTenant: Tenant }) {
   const router = useRouter();
   
   // Basic tenant fields
@@ -15,10 +27,10 @@ export default function AdminForm({ initialTenant }: { initialTenant: any }) {
   
   // Page content fields (assuming first section is hero)
   const page = initialTenant.pages?.[0];
-  const heroSection = page?.content?.sections?.find((s: any) => s.type === 'hero') || {};
+  const heroSection = page?.content?.sections?.find((s) => s.type === 'hero') || {};
   
-  const [heroTitle, setHeroTitle] = useState(heroSection.title || '');
-  const [heroSubtitle, setHeroSubtitle] = useState(heroSection.subtitle || '');
+  const [heroTitle, setHeroTitle] = useState((heroSection.title as string) || '');
+  const [heroSubtitle, setHeroSubtitle] = useState((heroSection.subtitle as string) || '');
 
   const [saving, setSaving] = useState(false);
 
@@ -38,7 +50,7 @@ export default function AdminForm({ initialTenant }: { initialTenant: any }) {
       if (page) {
         // Clone existing content to keep other sections intact
         const updatedContent = JSON.parse(JSON.stringify(page.content));
-        const heroIndex = updatedContent.sections.findIndex((s: any) => s.type === 'hero');
+        const heroIndex = updatedContent.sections.findIndex((s: Record<string, unknown>) => s.type === 'hero');
         
         if (heroIndex >= 0) {
           updatedContent.sections[heroIndex].title = heroTitle;
@@ -61,9 +73,9 @@ export default function AdminForm({ initialTenant }: { initialTenant: any }) {
       // Refresh router to fetch new data
       router.refresh();
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      toast.error('Failed to save changes: ' + err.message);
+      toast.error('Failed to save changes: ' + (err instanceof Error ? err.message : String(err)));
     } finally {
       setSaving(false);
     }

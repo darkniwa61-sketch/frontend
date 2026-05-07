@@ -76,7 +76,7 @@ export const LeadForm: React.FC<LeadFormProps> = ({
 
             <button 
               disabled={isSubmitting}
-              className="group w-full py-6 rounded-2xl font-black text-lg uppercase tracking-widest text-white transition-all hover:scale-[1.02] active:scale-100 shadow-xl bg-brand-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+              className="group w-full py-6 rounded-2xl font-black text-lg uppercase tracking-widest text-brand-primary-fg transition-all hover:scale-[1.02] active:scale-100 shadow-xl bg-brand-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
             >
               {isSubmitting ? 'Sending...' : 'Request a Quote'}
             </button>

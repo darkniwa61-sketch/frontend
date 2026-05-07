@@ -60,7 +60,7 @@ export default async function CMSDirectory() {
             </div>
             <h2 className="text-2xl font-bold text-zinc-200">No Tenants Available</h2>
             <p className="text-zinc-500 text-center max-w-md">
-              We couldn't fetch any tenants. Please ensure the backend server is running on port 4000 and the database is seeded.
+              We couldn&apos;t fetch any tenants. Please ensure the backend server is running on port 4000 and the database is seeded.
             </p>
           </div>
         )}

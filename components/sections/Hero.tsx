@@ -48,7 +48,7 @@ export const Hero: React.FC<HeroProps> = ({
           
           <button 
             onClick={scrollToForm}
-            className="px-10 py-5 bg-brand-primary text-white font-black uppercase tracking-widest rounded-full shadow-[0_0_30px_rgba(var(--brand-primary),0.3)] hover:scale-105 active:scale-95 transition-all text-sm md:text-base border border-white/10"
+            className="px-10 py-5 bg-brand-primary text-brand-primary-fg font-black uppercase tracking-widest rounded-full shadow-[0_0_30px_rgba(var(--brand-primary),0.3)] hover:scale-105 active:scale-95 transition-all text-sm md:text-base border border-white/10"
           >
             {ctaLabel}
           </button>

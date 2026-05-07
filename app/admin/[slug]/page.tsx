@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import AdminForm from './AdminForm';
 
 async function getTenant(slug: string) {
@@ -34,9 +35,9 @@ export default async function AdminPage({ params }: { params: Promise<{ slug: st
               Admin CMS Editor &middot; {tenant.slug}.localhost:3000
             </p>
           </div>
-          <a href="/" className="text-sm font-medium text-brand-primary hover:underline">
+          <Link href="/" className="text-sm font-medium text-brand-primary hover:underline">
             &larr; Back to Directory
-          </a>
+          </Link>
         </div>
       </header>
       

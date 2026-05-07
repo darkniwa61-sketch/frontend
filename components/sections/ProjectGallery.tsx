@@ -26,6 +26,7 @@ export const ProjectGallery: React.FC<ProjectGalleryProps> = ({ title, images })
             className="aspect-square relative overflow-hidden group rounded-3xl bg-zinc-100 cursor-pointer shadow-sm hover:shadow-xl transition-shadow"
             onClick={() => setSelectedImage(image)}
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src={image} 
               alt={`Project ${i}`} 
@@ -64,6 +65,7 @@ export const ProjectGallery: React.FC<ProjectGalleryProps> = ({ title, images })
               className="relative max-w-6xl max-h-full w-full h-full flex items-center justify-center"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img 
                 src={selectedImage} 
                 alt="Selected Project" 

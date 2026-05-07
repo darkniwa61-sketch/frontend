@@ -56,19 +56,19 @@ export default async function TenantPage({ params }: PageProps) {
 
   // Assuming the first page is our landing page
   const page = tenant.pages[0];
-  const sections = (page?.content as any)?.sections || [];
+  const sections = (page?.content as Record<string, unknown>)?.sections as Record<string, unknown>[] || [];
 
   return (
     <main className="min-h-screen font-(--font-outfit)">
-      {sections.map((section: any, index: number) => {
+      {sections.map((section: Record<string, unknown>, index: number) => {
         switch (section.type) {
           case 'hero':
             return (
               <Hero 
                 key={index}
-                title={section.title}
-                subtitle={section.subtitle}
-                backgroundImage={section.backgroundImage}
+                title={String(section.title)}
+                subtitle={String(section.subtitle)}
+                backgroundImage={String(section.backgroundImage)}
                 primaryColor={tenant.primaryColor}
                 ctaLabel={heroCtaLabel}
               />
@@ -77,8 +77,8 @@ export default async function TenantPage({ params }: PageProps) {
             return (
               <FeatureGrid 
                 key={index}
-                title={section.title}
-                features={section.features}
+                title={String(section.title)}
+                features={section.features as { title: string; description: string }[]}
                 secondaryColor={tenant.secondaryColor}
               />
             );
@@ -86,16 +86,16 @@ export default async function TenantPage({ params }: PageProps) {
             return (
               <ProjectGallery 
                 key={index}
-                title={section.title}
-                images={section.images}
+                title={String(section.title)}
+                images={section.images as string[]}
               />
             );
           case 'lead-form':
             return (
               <LeadForm 
                 key={index}
-                title={section.title}
-                description={section.description}
+                title={String(section.title)}
+                description={String(section.description)}
                 primaryColor={tenant.primaryColor}
                 inquiryOptions={inquiryOptions}
               />
@@ -103,7 +103,7 @@ export default async function TenantPage({ params }: PageProps) {
           default:
             return (
               <div key={index} className="p-10 border-2 border-dashed border-red-500 text-center text-red-500 m-4 rounded-xl">
-                Unknown section type: <b>{section.type}</b>
+                Unknown section type: <b>{String(section.type)}</b>
               </div>
             );
         }
