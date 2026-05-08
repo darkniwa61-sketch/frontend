@@ -9,6 +9,7 @@ interface FeatureGridProps {
   title: string;
   features: Feature[];
   secondaryColor?: string;
+  bgClass?: string;
 }
 
 export const FeatureGrid: React.FC<FeatureGridProps> = ({ 
@@ -18,10 +19,11 @@ export const FeatureGrid: React.FC<FeatureGridProps> = ({
     { title: "Heavy Aggregates", description: "Premium raw materials for high-scale construction projects." },
     { title: "Fast Delivery", description: "Unmatched speed and reliability across the entire region." }
   ], 
-  secondaryColor 
+  secondaryColor,
+  bgClass = "bg-white"
 }) => {
   return (
-    <section className="py-28 bg-white flex flex-col items-center px-6">
+    <section className={`py-28 flex flex-col items-center px-6 ${bgClass}`}>
       <div className="text-center mb-20 animate-fade-up">
         <h2 className="text-5xl md:text-6xl font-black text-zinc-900 border-b-8 border-brand-secondary/30 inline-block pb-4">
           {title}

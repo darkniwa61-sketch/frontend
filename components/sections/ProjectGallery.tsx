@@ -7,13 +7,16 @@ import { X, ChevronRight } from 'lucide-react';
 interface ProjectGalleryProps {
   title: string;
   images: string[];
+  bgClass?: string;
 }
 
-export const ProjectGallery: React.FC<ProjectGalleryProps> = ({ title, images }) => {
+export const ProjectGallery: React.FC<ProjectGalleryProps> = ({ title, images, bgClass = "bg-white" }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
+  if (!images || images.length === 0) return null;
+
   return (
-    <section className="py-24 px-6 flex flex-col items-center bg-white">
+    <section className={`py-24 px-6 flex flex-col items-center ${bgClass}`}>
       <h2 className="text-4xl md:text-5xl font-black mb-16 text-zinc-900 tracking-tighter">
         {title}
       </h2>

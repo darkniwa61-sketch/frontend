@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --brand-primary: #171717;
+  --background: #0b1120;
+  --foreground: #ededed;
+  --brand-primary: #8b5cf6;
   --brand-primary-fg: #ffffff;
-  --brand-secondary: #64748b;
+  --brand-secondary: #0f172a;
 }
 
 @theme inline {
@@ -20,7 +20,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #0b1120;
     --foreground: #ededed;
   }
 }
@@ -60,4 +60,13 @@ body {
 
 .animate-fade-up {
   animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.bg-dot-pattern {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.05) 2px, transparent 2px);
+  background-size: 32px 32px;
+}
+
+.dark .bg-dot-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 2px, transparent 2px);
 }

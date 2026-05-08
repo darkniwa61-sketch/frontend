@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { ArrowRight, Calendar } from 'lucide-react';
 
 interface HeroProps {
   title: string;
@@ -9,53 +10,99 @@ interface HeroProps {
   backgroundImage: string;
   primaryColor?: string;
   ctaLabel?: string;
+  featuredProperty?: {
+    name: string;
+    price: string;
+    image?: string;
+  };
 }
 
 export const Hero: React.FC<HeroProps> = ({ 
-  title = "St. Joseph Amity", 
-  subtitle = "Building the Future with Faith and Integrity.", 
-  backgroundImage = "https://images.unsplash.com/photo-1541888941259-79974dfb9602?q=80&w=2070&auto=format&fit=crop", 
-  primaryColor,
-  ctaLabel = "Request a Quote"
+  title = "Find Your Dream Home", 
+  subtitle = "Discover premium properties and investment opportunities with our expert real estate solutions.", 
+  backgroundImage = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c", 
+  primaryColor = "#8b5cf6",
+  ctaLabel = "Browse Listings",
+  featuredProperty
 }) => {
   const scrollToForm = () => {
     const form = document.querySelector('form');
     form?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
 
+  // Logic to highlight last two words
+  const words = title.split(' ');
+  const lastTwo = words.length >= 2 ? words.slice(-2).join(' ') : words.join(' ');
+  const mainTitle = words.length >= 2 ? words.slice(0, -2).join(' ') : '';
+
   return (
-    <section className="relative h-[85vh] flex items-center justify-center text-white overflow-hidden bg-zinc-900">
-      <div 
-        className="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-1000"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
-      />
-      {/* Sophisticated Gradient Overlay */}
-      <div className="absolute inset-0 z-10 bg-linear-to-t from-zinc-950 via-zinc-900/60 to-transparent" />
-      <div className="absolute inset-0 z-10 bg-black/10" />
+    <section className="relative min-h-[90vh] flex items-center bg-[#0b1120] text-white pt-20 overflow-hidden">
+      {/* Background radial glow */}
+      <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full z-0" />
       
-      <div className="relative z-20 text-center max-w-5xl px-6">
+      <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
         <motion.div
-           initial={{ opacity: 0, y: 30 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-xl"
         >
-          <h1 className="text-7xl md:text-9xl font-black mb-8 tracking-tighter text-brand-primary drop-shadow-2xl">
-            {title}
+          <h1 className="text-6xl md:text-7xl font-black mb-8 leading-[1.1] tracking-tight">
+            {mainTitle}{' '}
+            <span className="text-[#8b5cf6]">{lastTwo}</span>
           </h1>
-          <p className="text-xl md:text-3xl font-light opacity-90 leading-relaxed max-w-2xl mx-auto drop-shadow-md mb-12">
+          
+          <p className="text-lg md:text-xl text-slate-400 mb-10 leading-relaxed font-light">
             {subtitle}
           </p>
           
-          <button 
-            onClick={scrollToForm}
-            className="px-10 py-5 bg-brand-primary text-brand-primary-fg font-black uppercase tracking-widest rounded-full shadow-[0_0_30px_rgba(var(--brand-primary),0.3)] hover:scale-105 active:scale-95 transition-all text-sm md:text-base border border-white/10"
-          >
-            {ctaLabel}
-          </button>
+          <div className="flex flex-wrap gap-4 mb-16">
+            <button 
+              onClick={scrollToForm}
+              className="px-8 py-4 bg-[#8b5cf6] text-zinc-950 font-bold rounded-xl flex items-center gap-2 hover:bg-[#7c3aed] transition-all group"
+            >
+              {ctaLabel}
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+            
+            <button 
+              className="px-8 py-4 bg-transparent border border-slate-700 text-white font-bold rounded-xl hover:bg-slate-800 transition-all flex items-center gap-2"
+            >
+              <Calendar className="w-5 h-5" />
+              Schedule Consultation
+            </button>
+          </div>
           
-          <div className="mt-16 h-1 w-32 mx-auto bg-brand-primary/20 rounded-full" />
+
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="relative"
+        >
+          <div className="rounded-[40px] overflow-hidden shadow-2xl border border-white/5 aspect-[4/3] relative group">
+             {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img 
+              src={backgroundImage} 
+              alt="Luxury Home" 
+              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent" />
+          </div>
+          
+          {/* Floating Badge */}
+          {featuredProperty && (
+            <div className="absolute -bottom-6 -left-6 bg-slate-900/80 backdrop-blur-xl p-8 rounded-3xl border border-white/10 shadow-2xl max-w-xs animate-fade-up">
+              <div className="text-[#8b5cf6] text-xs font-bold uppercase tracking-widest mb-2">Featured Property</div>
+              <div className="text-xl font-bold text-white mb-2 leading-tight">{featuredProperty.name || 'Modern Downtown Penthouse'}</div>
+              <div className="text-2xl font-black text-[#8b5cf6]">{featuredProperty.price || 'Ask for Price'}</div>
+            </div>
+          )}
         </motion.div>
       </div>
     </section>
   );
 };
+
