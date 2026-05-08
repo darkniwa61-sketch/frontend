@@ -80,7 +80,12 @@ export const ProjectGrid: React.FC<ProjectGridProps> = ({
 
                 {/* Status Badge */}
                  <div className="absolute top-6 left-6">
-                  <div className="bg-white/10 backdrop-blur-md text-white px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest border border-white/10">
+                  <div className={`px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest border backdrop-blur-md ${
+                    project.status === 'Sold' ? 'bg-red-500/20 text-red-400 border-red-500/30' :
+                    project.status === 'Developed' ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' :
+                    project.status === 'Developing' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' :
+                    'bg-white/10 text-white border-white/10'
+                  }`}>
                     {project.status || "Ready"}
                   </div>
                 </div>

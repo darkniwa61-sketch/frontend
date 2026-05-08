@@ -447,17 +447,39 @@ export default function AdminForm({ initialTenant }: { initialTenant: Tenant }) 
                         </div>
                         <div className="flex-1 space-y-1">
                           <label className="text-[10px] font-bold text-zinc-500 uppercase">Status</label>
-                          <input 
-                            type="text" 
-                            placeholder="Developing / Ready"
-                            value={proj.status}
+                          <select 
+                            value={['Developed', 'Sold', 'Developing'].includes(proj.status) ? proj.status : 'Other'}
                             onChange={(e) => {
+                              const val = e.target.value;
                               const newProj = [...devProjects];
-                              newProj[idx].status = e.target.value;
+                              if (val === 'Other') {
+                                newProj[idx].status = '';
+                              } else {
+                                newProj[idx].status = val;
+                              }
                               setDevProjects(newProj);
                             }}
                             className="w-full px-4 py-2 rounded-lg border border-zinc-200 text-sm outline-none"
-                          />
+                          >
+                            <option value="Developed">Developed</option>
+                            <option value="Sold">Sold</option>
+                            <option value="Developing">Developing</option>
+                            <option value="Other">Other (Custom)</option>
+                          </select>
+                          {!['Developed', 'Sold', 'Developing'].includes(proj.status) && (
+                            <input 
+                              type="text" 
+                              autoFocus
+                              placeholder="Type custom status (e.g. Pre-selling)..."
+                              value={proj.status}
+                              onChange={(e) => {
+                                const newProj = [...devProjects];
+                                newProj[idx].status = e.target.value;
+                                setDevProjects(newProj);
+                              }}
+                              className="w-full px-4 py-2 rounded-lg border-2 border-brand-primary/30 bg-violet-50 text-sm outline-none mt-2 animate-in fade-in slide-in-from-top-1 shadow-sm"
+                            />
+                          )}
                         </div>
                       </div>
                       <div className="space-y-1">
