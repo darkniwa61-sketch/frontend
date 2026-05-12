@@ -102,13 +102,13 @@ export default async function CMSDirectory() {
                     {tenant.name}
                   </h3>
                   <div className="flex items-center text-sm font-mono text-zinc-500">
-                    <span>{tenant.slug}.localhost:3000</span>
+                    <span>/tenants/{tenant.slug}</span>
                   </div>
                 </div>
 
                 <div className="mt-10 flex items-center justify-between">
                   <Link 
-                    href={`http://${tenant.slug}.localhost:3000`}
+                    href={`/tenants/${tenant.slug}`}
                     className="flex items-center text-sm font-medium tracking-wide text-zinc-400 hover:text-white transition-colors duration-300"
                   >
                     <span className="mr-2">Visit site</span>

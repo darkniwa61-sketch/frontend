@@ -23,13 +23,21 @@ export function proxy(req: NextRequest) {
   const searchParams = url.searchParams.toString();
   const path = `${url.pathname}${searchParams.length > 0 ? `?${searchParams}` : ''}`;
 
-  // Handle local development subdomains
-  // If it's something.localhost:3000, extract 'something'
+  // Improved subdomain extraction
   let subdomain = '';
+  const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'localhost:3000';
+  
   if (hostname.includes('.localhost:3000')) {
     subdomain = hostname.split('.localhost:3000')[0];
-  } else if (hostname.split('.').length > 1) {
-    subdomain = hostname.split('.')[0];
+  } else if (hostname.endsWith('.vercel.app')) {
+    // Handle Vercel deployments (tenant.myapp.vercel.app)
+    const parts = hostname.replace('.vercel.app', '').split('.');
+    if (parts.length > 1) {
+      subdomain = parts[0];
+    }
+  } else if (hostname !== rootDomain && hostname.endsWith(`.${rootDomain}`)) {
+    // Handle custom domains (tenant.mycms.com)
+    subdomain = hostname.replace(`.${rootDomain}`, '');
   }
 
   // If there's a subdomain and it's not 'www' or 'localhost', rewrite to the tenant route
