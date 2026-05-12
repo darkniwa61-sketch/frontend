@@ -10,9 +10,11 @@ interface Tenant {
   logoUrl: string | null;
 }
 
+import { API_BASE_URL } from '@/lib/api';
+
 async function getTenants(): Promise<Tenant[]> {
   try {
-    const res = await fetch('http://localhost:4000/api/tenants', { 
+    const res = await fetch(`${API_BASE_URL}/api/tenants`, { 
       next: { revalidate: 0 },
       headers: {
         'Content-Type': 'application/json',

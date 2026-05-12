@@ -23,7 +23,7 @@ export const FeatureGrid: React.FC<FeatureGridProps> = ({
   bgClass = "bg-white"
 }) => {
   return (
-    <section className={`py-28 flex flex-col items-center px-6 ${bgClass}`}>
+    <section id="about" className={`py-28 flex flex-col items-center px-6 ${bgClass}`}>
       <div className="text-center mb-20 animate-fade-up">
         <h2 className="text-5xl md:text-6xl font-black text-zinc-900 border-b-8 border-brand-secondary/30 inline-block pb-4">
           {title}

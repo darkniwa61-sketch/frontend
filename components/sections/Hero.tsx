@@ -26,8 +26,10 @@ export const Hero: React.FC<HeroProps> = ({
   featuredProperty
 }) => {
   const scrollToForm = () => {
-    const form = document.querySelector('form');
-    form?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const element = document.getElementById('contact');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   // Logic to highlight last two words
@@ -36,7 +38,7 @@ export const Hero: React.FC<HeroProps> = ({
   const mainTitle = words.length >= 2 ? words.slice(0, -2).join(' ') : '';
 
   return (
-    <section className="relative min-h-[90vh] flex items-center bg-[#0b1120] text-white pt-20 overflow-hidden">
+    <section id="about" className="relative min-h-[90vh] flex items-center bg-[#0b1120] text-white pt-20 overflow-hidden">
       {/* Background radial glow */}
       <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full z-0" />
       
@@ -66,6 +68,7 @@ export const Hero: React.FC<HeroProps> = ({
             </button>
             
             <button 
+              onClick={scrollToForm}
               className="px-8 py-4 bg-transparent border border-slate-700 text-white font-bold rounded-xl hover:bg-slate-800 transition-all flex items-center gap-2"
             >
               <Calendar className="w-5 h-5" />

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { toast, Toaster } from 'sonner';
 import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, Send } from 'lucide-react';
+import { API_BASE_URL } from '@/lib/api';
 
 interface LeadFormProps {
   title: string;
@@ -14,6 +15,7 @@ interface LeadFormProps {
   phone?: string;
   email?: string;
   address?: string;
+  tenantSlug?: string;
 }
 
 export const LeadForm: React.FC<LeadFormProps> = ({ 
@@ -24,23 +26,54 @@ export const LeadForm: React.FC<LeadFormProps> = ({
   submitLabel = "Send Message",
   phone = "(555) 123-4567",
   email = "contact@stjoseph.com",
-  address = "123 Amity Blvd, New York, NY 10001"
+  address = "123 Amity Blvd, New York, NY 10001",
+  tenantSlug
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [interest, setInterest] = useState(inquiryOptions[0] || "General Inquiry");
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast.success('Message Sent Successfully', {
-        description: 'Our team will contact you shortly.',
+    const formData = new FormData(e.target as HTMLFormElement);
+    const data = {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      interest: interest,
+      message: formData.get('message') as string,
+      date: interest === 'Property Viewing' ? date : undefined,
+      time: interest === 'Property Viewing' ? time : undefined,
+    };
+
+    try {
+      if (tenantSlug) {
+        const res = await fetch(`${API_BASE_URL}/api/tenants/${tenantSlug}/leads`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        
+        if (!res.ok) throw new Error('Failed to send inquiry');
+      }
+
+      toast.success(interest === 'Property Viewing' ? 'Viewing Scheduled!' : 'Message Sent Successfully', {
+        description: interest === 'Property Viewing' 
+          ? `We've received your request for ${date} at ${time}. Our team will contact you to confirm.`
+          : 'Our team will contact you shortly.',
         duration: 5000,
       });
       (e.target as HTMLFormElement).reset();
-    }, 1500);
+      setDate('');
+      setTime('');
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Logic to highlight last word
@@ -49,7 +82,7 @@ export const LeadForm: React.FC<LeadFormProps> = ({
   const firstPart = words.slice(0, -1).join(' ');
 
   return (
-    <section className="py-32 bg-[#0b1120] text-white px-6">
+    <section id="contact" className="py-32 bg-[#0b1120] text-white px-6">
       <Toaster position="bottom-right" theme="dark" />
       <div className="container mx-auto max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
@@ -94,26 +127,60 @@ export const LeadForm: React.FC<LeadFormProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 ml-1">Full Name</label>
-                  <input required type="text" placeholder="John Doe" className="w-full px-6 py-4 rounded-xl bg-slate-900/50 border border-white/10 focus:outline-none focus:border-[#8b5cf6]/50 transition-all text-white placeholder:text-slate-600" />
+                  <input name="name" required type="text" placeholder="John Doe" className="w-full px-6 py-4 rounded-xl bg-slate-900/50 border border-white/10 focus:outline-none focus:border-[#8b5cf6]/50 transition-all text-white placeholder:text-slate-600" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 ml-1">Email Address</label>
-                  <input required type="email" placeholder="john@example.com" className="w-full px-6 py-4 rounded-xl bg-slate-900/50 border border-white/10 focus:outline-none focus:border-[#8b5cf6]/50 transition-all text-white placeholder:text-slate-600" />
+                  <input name="email" required type="email" placeholder="john@example.com" className="w-full px-6 py-4 rounded-xl bg-slate-900/50 border border-white/10 focus:outline-none focus:border-[#8b5cf6]/50 transition-all text-white placeholder:text-slate-600" />
                 </div>
               </div>
 
               <div>
                 <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 ml-1">Property Interest</label>
-                <select required className="w-full px-6 py-4 rounded-xl bg-slate-900/50 border border-white/10 focus:outline-none focus:border-[#8b5cf6]/50 transition-all text-white appearance-none cursor-pointer">
+                <select 
+                  required 
+                  value={interest}
+                  onChange={(e) => setInterest(e.target.value)}
+                  className="w-full px-6 py-4 rounded-xl bg-slate-900/50 border border-white/10 focus:outline-none focus:border-[#8b5cf6]/50 transition-all text-white appearance-none cursor-pointer"
+                >
                   {inquiryOptions.map((option, i) => (
                     <option key={i} value={option} className="bg-slate-900">{option}</option>
                   ))}
                 </select>
               </div>
 
+              {interest === 'Property Viewing' && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  className="grid grid-cols-1 md:grid-cols-2 gap-8 overflow-hidden"
+                >
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 ml-1">Preferred Date</label>
+                    <input 
+                      required 
+                      type="date" 
+                      value={date}
+                      onChange={(e) => setDate(e.target.value)}
+                      className="w-full px-6 py-4 rounded-xl bg-slate-900/50 border border-white/10 focus:outline-none focus:border-[#8b5cf6]/50 transition-all text-white [color-scheme:dark]" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 ml-1">Preferred Time</label>
+                    <input 
+                      required 
+                      type="time" 
+                      value={time}
+                      onChange={(e) => setTime(e.target.value)}
+                      className="w-full px-6 py-4 rounded-xl bg-slate-900/50 border border-white/10 focus:outline-none focus:border-[#8b5cf6]/50 transition-all text-white [color-scheme:dark]" 
+                    />
+                  </div>
+                </motion.div>
+              )}
+
               <div>
                 <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 ml-1">Message</label>
-                <textarea required rows={4} placeholder="Tell us about your real estate needs..." className="w-full px-6 py-4 rounded-xl bg-slate-900/50 border border-white/10 focus:outline-none focus:border-[#8b5cf6]/50 transition-all text-white resize-none placeholder:text-slate-600"></textarea>
+                <textarea name="message" required rows={4} placeholder="Tell us about your real estate needs..." className="w-full px-6 py-4 rounded-xl bg-slate-900/50 border border-white/10 focus:outline-none focus:border-[#8b5cf6]/50 transition-all text-white resize-none placeholder:text-slate-600"></textarea>
               </div>
 
               <button 

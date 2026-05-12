@@ -10,10 +10,12 @@ interface Testimonial {
 }
 
 interface TestimonialsProps {
-  items?: Testimonial[];
+  title?: string;
+  testimonials?: Testimonial[];
+  primaryColor?: string;
 }
 
-export const Testimonials: React.FC<TestimonialsProps> = ({ items }) => {
+export const Testimonials: React.FC<TestimonialsProps> = ({ title, testimonials, primaryColor }) => {
   const defaultItems = [
     {
       name: "Sarah Johnson",
@@ -32,15 +34,15 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ items }) => {
     }
   ];
 
-  const displayItems = items && items.length > 0 ? items : defaultItems;
+  const displayItems = testimonials && testimonials.length > 0 ? testimonials : defaultItems;
 
   return (
-    <section className="py-32 bg-[#0b1120] text-white overflow-hidden relative">
+    <section id="testimonials" className="py-32 bg-[#0b1120] text-white overflow-hidden relative">
       <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-blue-600/5 blur-[120px] rounded-full z-0" />
       <div className="container mx-auto px-6 relative z-10 max-w-6xl">
         <div className="text-center mb-20">
           <h2 className="text-5xl md:text-6xl font-black mb-6 tracking-tight">
-            What Our <span className="text-[#8b5cf6]">Clients Say</span>
+            {title || "What Our Clients Say"}
           </h2>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto font-light">
             Don't just take our word for it. Here's what our satisfied clients have to say about their experience.
@@ -69,7 +71,10 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ items }) => {
               </p>
               
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center font-bold text-[#8b5cf6]">
+                <div 
+                  className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center font-bold"
+                  style={{ color: primaryColor || '#8b5cf6' }}
+                >
                   {item.name.charAt(0)}
                 </div>
                 <div>
