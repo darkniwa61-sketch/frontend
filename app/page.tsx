@@ -106,19 +106,13 @@ export default async function CMSDirectory() {
                   </div>
                 </div>
 
-                <div className="mt-10 flex items-center justify-between">
+                <div className="mt-10 flex items-center justify-start">
                   <Link 
                     href={`/tenants/${tenant.slug}`}
                     className="flex items-center text-sm font-medium tracking-wide text-zinc-400 hover:text-white transition-colors duration-300"
                   >
                     <span className="mr-2">Visit site</span>
                     <ArrowRight className="w-5 h-5 transform transition-transform duration-300 group-hover:translate-x-2" />
-                  </Link>
-                  <Link 
-                    href={`/admin/${tenant.slug}`}
-                    className="px-4 py-2 rounded-full text-xs font-semibold bg-zinc-800 text-zinc-300 hover:bg-zinc-700 hover:text-white transition-colors z-20 border border-zinc-700"
-                  >
-                    Edit Tenant
                   </Link>
                 </div>
               </div>
