@@ -20,7 +20,7 @@ export default async function AdminPage({ params }: { params: Promise<{ slug: st
   const resolvedParams = await params;
   const tenant = await getTenant(resolvedParams.slug);
 
-  if (!tenant) {
+  if (!tenant || (resolvedParams.slug === 'starblue' && process.env.NODE_ENV !== 'development')) {
     notFound();
   }
 

@@ -18,6 +18,11 @@ export default function LoginPage() {
   const [tenant, setTenant] = useState<any>(null);
 
   useEffect(() => {
+    if (slug === 'starblue' && process.env.NODE_ENV !== 'development') {
+      import('next/navigation').then((mod) => mod.notFound());
+      return;
+    }
+
     // Fetch tenant data to get branding
     fetch(`${API_BASE_URL}/api/tenants/${slug}`)
       .then(res => res.json())

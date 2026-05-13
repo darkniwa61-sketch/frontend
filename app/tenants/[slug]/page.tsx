@@ -50,7 +50,7 @@ export default async function TenantPage({ params }: PageProps) {
   const { slug } = await params;
   const tenant = await getTenantData(slug);
 
-  if (!tenant || slug === 'starblue') {
+  if (!tenant || (slug === 'starblue' && process.env.NODE_ENV !== 'development')) {
     notFound();
   }
 
