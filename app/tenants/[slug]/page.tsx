@@ -68,9 +68,17 @@ export default async function TenantPage({ params }: PageProps) {
   const allSections = (page?.content as Record<string, unknown>)?.sections as Record<string, unknown>[] || [];
   
   // Filter out removed legacy sections
-  const sections = allSections.filter(s => 
+  const filtered = allSections.filter(s => 
     !['project-gallery', 'about', 'services'].includes(String(s.type))
   );
+
+  // Enforce fixed display order: hero → projects → testimonials → feature-grid → logistics → products → lead-form
+  const sectionOrder = ['hero', 'projects', 'testimonials', 'feature-grid', 'logistics', 'products', 'lead-form'];
+  const sections = [
+    ...sectionOrder.map(type => filtered.find(s => s.type === type)).filter(Boolean),
+    ...filtered.filter(s => !sectionOrder.includes(String(s.type))), // unknown section types at end
+  ] as Record<string, unknown>[];
+
 
   const heroSection = sections.find(s => s.type === 'hero');
   const customCtaLabel = heroSection?.ctaText ? String(heroSection.ctaText) : heroCtaLabel;
