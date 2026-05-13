@@ -1,10 +1,11 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import AdminForm from './AdminForm';
+import { API_BASE_URL } from '@/lib/api';
 
 async function getTenant(slug: string) {
   try {
-    const res = await fetch(`http://localhost:4000/api/tenants/${slug}`, {
+    const res = await fetch(`${API_BASE_URL}/api/tenants/${slug}`, {
       cache: 'no-store', // Always get fresh data for admin
     });
     if (!res.ok) return null;
