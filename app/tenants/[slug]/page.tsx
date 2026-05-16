@@ -56,7 +56,7 @@ export default async function TenantPage({ params }: PageProps) {
 
   // Define dynamic inquiry options and Hero CTA based on tenant
   const inquiryOptions = slug === 'st-joseph' 
-    ? ["Property Viewing", "General Inquiry"] 
+    ? ["Schedule a Viewing", "General Inquiry"] 
     : ["Material Quote", "Delivery Logistics"];
 
   const heroCtaLabel = slug === 'st-joseph'

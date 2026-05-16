@@ -74,7 +74,7 @@ export default function AdminForm({ initialTenant }: { initialTenant: Tenant }) 
   const [contactPhone, setContactPhone] = useState(initialTenant.contactPhone || '');
   const [contactEmail, setContactEmail] = useState(initialTenant.contactEmail || '');
   const [facebookUrl, setFacebookUrl] = useState(initialTenant.socialLinks?.facebook || '');
-  const [linkedinUrl, setLinkedinUrl] = useState(initialTenant.socialLinks?.linkedin || '');
+  const [instagramUrl, setInstagramUrl] = useState(initialTenant.socialLinks?.instagram || '');
   const [twitterUrl, setTwitterUrl] = useState(initialTenant.socialLinks?.twitter || '');
   
   // Page content fields
@@ -193,7 +193,7 @@ export default function AdminForm({ initialTenant }: { initialTenant: Tenant }) 
           contactEmail: contactEmail.trim() || null,
           socialLinks: {
             facebook: facebookUrl.trim() || null,
-            linkedin: linkedinUrl.trim() || null,
+            instagram: instagramUrl.trim() || null,
             twitter: twitterUrl.trim() || null,
           }
         }),
@@ -402,12 +402,12 @@ export default function AdminForm({ initialTenant }: { initialTenant: Tenant }) 
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-zinc-700">LinkedIn URL</label>
+            <label className="text-sm font-semibold text-zinc-700">Instagram URL</label>
             <input 
               type="text" 
-              value={linkedinUrl}
-              onChange={(e) => setLinkedinUrl(e.target.value)}
-              placeholder="https://linkedin.com/company/yourpage"
+              value={instagramUrl}
+              onChange={(e) => setInstagramUrl(e.target.value)}
+              placeholder="https://instagram.com/yourpage"
               className="w-full px-4 py-3 rounded-xl border border-zinc-200 focus:ring-2 focus:ring-brand-primary focus:border-brand-primary outline-none transition-all text-zinc-900"
             />
           </div>
@@ -894,7 +894,7 @@ export default function AdminForm({ initialTenant }: { initialTenant: Tenant }) 
                             </div>
                           </div>
                           <div className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest ${
-                            lead.interest === 'Property Viewing' 
+                            (lead.interest === 'Property Viewing' || lead.interest === 'Schedule a Viewing')
                               ? 'bg-violet-100 text-violet-600' 
                               : 'bg-zinc-200 text-zinc-600'
                           }`}>

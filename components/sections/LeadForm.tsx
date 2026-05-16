@@ -44,8 +44,8 @@ export const LeadForm: React.FC<LeadFormProps> = ({
       email: formData.get('email') as string,
       interest: interest,
       message: formData.get('message') as string,
-      date: interest === 'Property Viewing' ? date : undefined,
-      time: interest === 'Property Viewing' ? time : undefined,
+      date: (interest === 'Property Viewing' || interest === 'Schedule a Viewing') ? date : undefined,
+      time: (interest === 'Property Viewing' || interest === 'Schedule a Viewing') ? time : undefined,
     };
 
     try {
@@ -59,8 +59,8 @@ export const LeadForm: React.FC<LeadFormProps> = ({
         if (!res.ok) throw new Error('Failed to send inquiry');
       }
 
-      toast.success(interest === 'Property Viewing' ? 'Viewing Scheduled!' : 'Message Sent Successfully', {
-        description: interest === 'Property Viewing' 
+      toast.success((interest === 'Property Viewing' || interest === 'Schedule a Viewing') ? 'Viewing Scheduled!' : 'Message Sent Successfully', {
+        description: (interest === 'Property Viewing' || interest === 'Schedule a Viewing') 
           ? `We've received your request for ${date} at ${time}. Our team will contact you to confirm.`
           : 'Our team will contact you shortly.',
         duration: 5000,
@@ -149,7 +149,7 @@ export const LeadForm: React.FC<LeadFormProps> = ({
                 </select>
               </div>
 
-              {interest === 'Property Viewing' && (
+              {(interest === 'Property Viewing' || interest === 'Schedule a Viewing') && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
