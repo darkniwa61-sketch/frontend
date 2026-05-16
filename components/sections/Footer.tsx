@@ -1,4 +1,5 @@
 'use client';
+// Updated footer icons and viewing labels
 
 import React from 'react';
 
