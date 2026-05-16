@@ -56,7 +56,13 @@ export const LeadForm: React.FC<LeadFormProps> = ({
           body: JSON.stringify(data),
         });
         
-        if (!res.ok) throw new Error('Failed to send inquiry');
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          const errMsg = errData.message 
+            ? (Array.isArray(errData.message) ? errData.message[0] : errData.message) 
+            : 'Failed to send inquiry';
+          throw new Error(errMsg);
+        }
       }
 
       toast.success((interest === 'Property Viewing' || interest === 'Schedule a Viewing') ? 'Viewing Scheduled!' : 'Message Sent Successfully', {
@@ -68,9 +74,9 @@ export const LeadForm: React.FC<LeadFormProps> = ({
       (e.target as HTMLFormElement).reset();
       setDate('');
       setTime('');
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      toast.error('Failed to send message. Please try again.');
+      toast.error(error.message || 'Failed to send message. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -159,7 +165,8 @@ export const LeadForm: React.FC<LeadFormProps> = ({
                     <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 ml-1">Preferred Date</label>
                     <input 
                       required 
-                      type="date" 
+                      type="date"
+                      name="date"
                       value={date}
                       onChange={(e) => setDate(e.target.value)}
                       className="w-full px-6 py-4 rounded-xl bg-slate-900/50 border border-white/10 focus:outline-none focus:border-[#8b5cf6]/50 transition-all text-white [color-scheme:dark]" 
@@ -169,7 +176,8 @@ export const LeadForm: React.FC<LeadFormProps> = ({
                     <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 ml-1">Preferred Time</label>
                     <input 
                       required 
-                      type="time" 
+                      type="time"
+                      name="time"
                       value={time}
                       onChange={(e) => setTime(e.target.value)}
                       className="w-full px-6 py-4 rounded-xl bg-slate-900/50 border border-white/10 focus:outline-none focus:border-[#8b5cf6]/50 transition-all text-white [color-scheme:dark]" 
